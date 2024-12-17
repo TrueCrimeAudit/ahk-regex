@@ -1,131 +1,39 @@
 {
-  "name": "regex",
-  "displayName": "Regex Previewer",
-  "description": "Regex matches previewer for JavaScript, TypeScript, PHP and Haxe in Visual Studio Code.",
-  "version": "0.5.0",
-  "publisher": "chrmarti",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/chrmarti/vscode-regex.git"
-  },
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/chrmarti/vscode-regex/issues"
-  },
-  "keywords": [
-    "regex",
-    "regular expression",
-    "regexp",
-    "test"
-  ],
-  "icon": "images/icon.png",
-  "engines": {
-    "vscode": "^1.92.0"
-  },
-  "categories": [
-    "Other",
-    "Chat",
-    "AI"
-  ],
-  "activationEvents": [
-    "onLanguage:javascript",
-    "onLanguage:javascriptreact",
-    "onLanguage:typescript",
-    "onLanguage:typescriptreact",
-    "onLanguage:vue",
-    "onLanguage:php",
-    "onLanguage:haxe"
-  ],
-  "main": "./out/extension",
-  "browser": "./out/extension",
-  "contributes": {
-    "configuration": {
-      "type": "object",
-      "title": "Regex Previewer Configuration",
-      "properties": {
-        "regex-previewer.enableCodeLens": {
-          "scope": "resource",
-          "type": "boolean",
-          "default": true,
-          "description": "Enables code lens for Regex Previewer"
-        }
-      }
-    },
-    "commands": [
-      {
-        "command": "extension.toggleRegexPreview",
-        "title": "Toggle Regex Preview In Side-By-Side Editors"
-      }
-    ],
-    "keybindings": [
-      {
-        "command": "extension.toggleRegexPreview",
-        "key": "ctrl+alt+m",
-        "mac": "cmd+alt+m"
-      }
-    ],
-    "chatParticipants": [
-      {
-        "id": "regex.chatParticipant",
-        "fullName": "Regex",
-        "name": "regex",
-        "description": "Talk to me about regexes!",
-        "isSticky": true,
-        "commands": [
-          {
-            "name": "new",
-            "description": "Create a new regex from a description",
-            "disambiguation": [
-              {
-                "category": "regex_new",
-                "description": "The user wants to create a new regex from a description.",
-                "examples": [
-                  "Create a new regex matching something",
-                  "New regex matching something",
-                  "Build a regex for something"
-                ]
-              }
-            ]
-          },
-          {
-            "name": "new-from",
-            "description": "Create a new regex from a sample",
-            "disambiguation": [
-              {
-                "category": "regex_new-from",
-                "description": "The user wants to create a new regex from a sample.",
-                "examples": [
-                  "Create a new regex that matches this",
-                  "New regex from sample",
-                  "Build a regex for this"
-                ]
-              }
-            ]
-          }
-        ],
-        "disambiguation": [
-          {
-            "category": "regex",
-            "description": "The user wants to understand a regex.",
-            "examples": [
-              "Explain this regex",
-              "What does this regex do?",
-              "How does this regex work?"
-            ]
-          }
-        ]
-      }
-    ]
-  },
-  "scripts": {
-    "vscode:prepublish": "yarn run compile",
-    "compile": "tsc -p ./",
-    "watch": "tsc -watch -p ./",
-    "package": "vsce package",
-    "publish": "vsce publish"
-  },
-  "devDependencies": {
-    "@types/vscode": "^1.92.0",
-    "typescript": "^5.6.2"
-  }
+	"name": "regex",
+	"displayName": "Regex Previewer",
+	"description": "Regex matches previewer",
+	"version": "0.5.1",
+	"publisher": "chrmarti",
+	"engines": {
+		"vscode": "^1.60.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [
+		"onLanguage:javascript",
+		"onLanguage:typescript",
+		"onLanguage:javascriptreact",
+		"onLanguage:typescriptreact",
+		"onLanguage:php",
+		"onLanguage:haxe",
+		"onLanguage:ahk",
+		"onLanguage:autohotkey",
+		"onLanguage:ahk2",
+		"onLanguage:autohotkey2"
+	],
+	"main": "./out/extension.js",
+	"scripts": {
+		"vscode:prepublish": "npm run compile",
+		"compile": "tsc -p ./",
+		"watch": "tsc -watch -p ./"
+	},
+	"devDependencies": {
+		"@types/node": "^16.11.7",
+		"@types/vscode": "^1.60.0",
+		"typescript": "^4.4.4"
+	},
+	"__metadata": {
+		"size": 69519327
+	}
 }
