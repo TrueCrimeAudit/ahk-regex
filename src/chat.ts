@@ -1,16 +1,15 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.registerChatParticipant = registerChatParticipant;
 /*---------------------------------------------------------------------------------------------
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See LICENSE in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
-import * as vscode from 'vscode';
-
+const vscode = require("vscode");
 const REGEX_PARTICIPANT_ID = 'regex.chatParticipant';
-
-const MODEL_SELECTOR: vscode.LanguageModelChatSelector = { vendor: 'copilot', family: 'gpt-4o' };
-
-export function registerChatParticipant(context: vscode.ExtensionContext) {
-
-    const handler: vscode.ChatRequestHandler = async (request: vscode.ChatRequest, context: vscode.ChatContext, stream: vscode.ChatResponseStream, token: vscode.CancellationToken): Promise<void> => {
+const MODEL_SELECTOR = { vendor: 'copilot', family: 'gpt-4o' };
+function registerChatParticipant(context) {
+    const handler = async (request, context, stream, token) => {
         try {
             let [model] = await vscode.lm.selectChatModels(MODEL_SELECTOR);
             if (!model) {
@@ -33,7 +32,8 @@ export function registerChatParticipant(context: vscode.ExtensionContext) {
                             break;
                         }
                         messages.push(vscode.LanguageModelChatMessage.User(turn.prompt));
-                    } else if (turn instanceof vscode.ChatResponseTurn) {
+                    }
+                    else if (turn instanceof vscode.ChatResponseTurn) {
                         for (const part of turn.response) {
                             if (part instanceof vscode.ChatResponseMarkdownPart) {
                                 messages.push(vscode.LanguageModelChatMessage.Assistant(part.value.value));
@@ -45,30 +45,30 @@ export function registerChatParticipant(context: vscode.ExtensionContext) {
             }
             if (!messages.length) {
                 messages.push(...getInitialPrompt(request));
-            } else {
+            }
+            else {
                 messages.push(vscode.LanguageModelChatMessage.User(request.prompt));
             }
-
             const chatResponse = await model.sendRequest(messages, {}, token);
             for await (const fragment of chatResponse.text) {
                 stream.markdown(fragment);
             }
-        } catch (err) {
+        }
+        catch (err) {
             if (err instanceof vscode.LanguageModelError) {
                 stream.markdown(`${err.message} (${err.code})`);
-            } else {
+            }
+            else {
                 throw err;
             }
         }
     };
-
-    function getInitialPrompt({ prompt, command }: { prompt: string; command?: string }) {
+    function getInitialPrompt({ prompt, command }) {
         const languageId = vscode.window.activeTextEditor?.document.languageId
             || vscode.window.visibleTextEditors[0]?.document.languageId
             || vscode.workspace.textDocuments[0]?.languageId
             || 'javascript';
         const languageName = languageIdToNameMapping[languageId] || languageId;
-
         if (command === 'new') {
             return [
                 vscode.LanguageModelChatMessage.User('You are an expert in regular expressions! Your job is to create regular expressions based on descriptions of what has to match.'),
@@ -84,18 +84,13 @@ export function registerChatParticipant(context: vscode.ExtensionContext) {
         return [
             vscode.LanguageModelChatMessage.User(`You are an expert in regular expressions! Your job is to assist with regular expressions in ${languageName}.`),
             vscode.LanguageModelChatMessage.User(prompt),
-        ]
+        ];
     }
-
     const regex = vscode.chat.createChatParticipant(REGEX_PARTICIPANT_ID, handler);
     regex.iconPath = vscode.Uri.joinPath(context.extensionUri, 'images', 'icon.png');
-
-    context.subscriptions.push(
-        regex,
-    );
+    context.subscriptions.push(regex);
 }
-
-const languageIdToNameMapping: { [id: string]: string } = {
+const languageIdToNameMapping = {
     'javascript': 'JavaScript',
     'javascriptreact': 'JavaScript React',
     'typescript': 'TypeScript',
@@ -120,4 +115,7 @@ const languageIdToNameMapping: { [id: string]: string } = {
     'json': 'JSON',
     'xml': 'XML',
     'sql': 'SQL',
+    'ahk': 'AutoHotkey',
+    'ahk2': 'AutoHotkey2',
 };
+//# sourceMappingURL=chat.js.map
